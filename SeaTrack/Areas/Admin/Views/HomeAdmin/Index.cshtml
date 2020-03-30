@@ -1,0 +1,142 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+<div class="container-fluid" ng-app="AdminModule" ng-controller="AdminController">
+    <h1 class="mt-4">Tables</h1>
+    <ol class="breadcrumb mb-4">
+        <li class="breadcrumb-item"><a href="index.html">Dashboard</a></li>
+        <li class="breadcrumb-item active">Tables</li>
+    </ol>
+    <div class="card mb-4">
+        <div class="card-header">
+            <strong class="card-title">Vùng Tìm Kiếm</strong>
+        </div>
+        <div class="card-body">
+            <div class="col col-md-12">
+                <div class="input-group">
+
+
+                    <input type="text" id="input1-group2" name="input1-group2" placeholder="Username" class="form-control"><br />
+                    <div class="input-group-btn">
+                        <button class="btn btn-primary">
+                            <i class="fa fa-search"></i> Search
+                        </button>
+                    </div>
+                </div>
+                <br />
+                <div class="input-group py-md-4">
+                    <label for="checkbox1" class="form-check-label ">
+                        <input type="checkbox" id="checkbox1" name="checkbox1" value="option1" class="form-check-input">Lọc Theo điều kiện
+                    </label>
+                </div>
+                <div class="input-group py-md-4">
+                    <label for="checkbox1" class="form-check-label ">
+                        <input type="checkbox" id="checkbox1" name="checkbox1" value="option1" class="form-check-input">Lọc Theo
+                    </label>
+                </div>
+                <div class="input-group py-md-4">
+                    <label for="checkbox1" class="form-check-label ">
+                        <input type="checkbox" id="checkbox1" name="checkbox1" value="option1" class="form-check-input">Lọc Theo điều kiện
+                    </label>
+
+                </div>
+            </div>
+
+        </div>
+
+
+    </div>
+    <div class="card mb-4">
+        <div class="card-header"><i class="fas fa-table mr-1"></i>DataTable Example</div>
+        <button type="button" class="btn btn-info" data-target="#AddNew" data-toggle="modal">
+            Thêm mới
+        </button>
+
+        <div class="card-body">
+            <input ng-model="SearchKey" type="text" ng-text-change="KeyFilter()" />
+            <div class="table-responsive">
+                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+
+                    <thead>
+                        <tr>
+                            <td>#</td>
+                            <td>Thao tác</td>
+                            <th>Username</th>
+                            <th>Fullname</th>
+                            <th>Phone</th>
+                            <th>CreateDate</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="a in Agencys">
+                            <td>{{$index+1}}</td>
+                            <td>
+                                <a href="#" ng-click="ViewDetail(id = a.UserID)"><i class="fa fa-eye" style="color:aqua">as</i></a>|
+                                <a href="#" data-ng-href="@Url.Action("Detail","HomeAdmin")/{{a.UserID}}"><i class="fa fa-edit">edit</i></a>|
+                                <a href="#" ng-click="Delete(a.UserID)"><i class="fa fa-times" style="color:red"></i></a>
+                            </td>
+                            <td>{{a.Username}}</td>
+                            <td>{{a.Fullname}}</td>
+                            <td>{{a.Phone}}</td>
+                            <td>{{a.CreateDate}}</td>
+                            <td ng-show="a.Status==0">Tạm khóa</td>
+                            <td ng-show="a.Status==1">Đã kích hoạt</td>
+                            <td ng-show="a.Status==2">Vô hiệu</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="modal" id="AddNew" role="dialog" data-keyboard="false" data-backdrop="static">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h3 class="text-info">Thêm đại lý</h3>
+                        <button type="button" class="close" data-dismiss="modal" style="text-align:left" ng-click="Resetsave()">x</button>
+                    </div>
+                    <div class="modal-body" style="margin-left:20px">
+                        <form class="form-horizontal" name="AddNewForm">
+                            <div class="form-group">
+                                <label class="control-label"> Username</label>
+                                <input class="form-control" name="Username" ng-model="Username" type="text" placeholder="Username" required maxlength="50" />
+
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label"> Password</label>
+                                <input class="form-control" name="Password" ng-model="Password" type="password" placeholder="password" required maxlength="30" />
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label"> Fullname</label>
+                                <input class="form-control" name="Fullname" ng-model="Fullname" type="text" placeholder="Fullname" required maxlength="50" />
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label"> Phone</label>
+                                <input class="form-control" name="Phone" ng-model="Phone" type="text" placeholder="Phone" required maxlength="10" />
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label"> Address</label>
+                                <input class="form-control" name="Address" ng-model="Address" type="text" placeholder="Address" required maxlength="200" />
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-primary" id="btnSave" data-dismiss="modal" ng-disabled="AddNewForm.$invalid" ng-click="save()">Save</button>
+                        <button type="button" class="btn btn-default" data-dismiss="modal" ng-click="Resetsave()">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <script src="~/Scripts/angular.js"></script>
+    <script src="~/Areas/Admin/AngularJS/Admin/AdminModule.js"></script>
+    <script src="~/Areas/Admin/AngularJS/Admin/AdminService.js"></script>
+    <script src="~/Areas/Admin/AngularJS/Admin/AdminController.js"></script>
+
+
+</div>
